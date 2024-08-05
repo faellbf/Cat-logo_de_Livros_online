@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Livros Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .livro {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Catálogo de Livros Online</h1>
+
+    <form id="formLivro">
+        <h2>Adicionar Livro</h2>
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" required><br><br>
+        
+        <label for="autor">Autor:</label>
+        <input type="text" id="autor" required><br><br>
+        
+        <label for="genero">Gênero:</label>
+        <input type="text" id="genero" required><br><br>
+        
+        <label for="ano">Ano de Publicação:</label>
+        <input type="number" id="ano" required><br><br>
+        
+        <button type="submit">Adicionar Livro</button>
+    </form>
+
+    <hr>
+
+    <h2>Buscar Livro</h2>
+    <input type="text" id="buscaInput" placeholder="Buscar por título, autor ou gênero...">
+    <button onclick="buscarLivro()">Buscar</button>
+
+    <hr>
+
+    <h2>Listagem de Livros</h2>
+    <div id="listaLivros">
+        <!-- Aqui serão exibidos os livros -->
+    </div>
+
+    <script>
+        // Array para armazenar os livros (simulando o armazenamento)
+let livros = [];
+
+// Função para adicionar um livro ao catálogo
+function adicionarLivro(event) {
+    event.preventDefault(); // Impede o envio do formulário
+
+    // Obtém os valores do formulário
+    let titulo = document.getElementById('titulo').value;
+    let autor = document.getElementById('autor').value;
+    let genero = document.getElementById('genero').value;
+    let ano = document.getElementById('ano').value;
+
+    // Cria um objeto livro
+    let livro = {
+        titulo: titulo,
+        autor: autor,
+        genero: genero,
+        ano: ano,
+        avaliacao: null // inicialmente sem avaliação
+    };
+
+    // Adiciona o livro ao array
+    livros.push(livro);
+
+    // Limpa os campos do formulário
+    document.getElementById('titulo').value = '';
+    document.getElementById('autor').value = '';
+    document.getElementById('genero').value = '';
+    document.getElementById('ano').value = '';
+
+    // Atualiza a listagem de livros
+    listarLivros();
+}
+
+// Função para buscar livros por título, autor ou gênero
+function buscarLivro() {
+    let termo = document.getElementById('buscaInput').value.toLowerCase();
+    let resultados = livros.filter(livro =>
+        livro.titulo.toLowerCase().includes(termo) ||
+        livro.autor.toLowerCase().includes(termo) ||
+        livro.genero.toLowerCase().includes(termo)
+    );
+
+    // Exibe os resultados encontrados
+    exibirResultados(resultados);
+}
+
+// Função para listar todos os livros
+function listarLivros() {
+    let listaLivros = document.getElementById('listaLivros');
+    listaLivros.innerHTML = ''; // Limpa a lista
+
+    livros.forEach(livro => {
+        let divLivro = document.createElement('div');
+        divLivro.classList.add('livro');
+        divLivro.innerHTML = `
+            <strong>Título:</strong> ${livro.titulo}<br>
+            <strong>Autor:</strong> ${livro.autor}<br>
+            <strong>Gênero:</strong> ${livro.genero}<br>
+            <strong>Ano de Publicação:</strong> ${livro.ano}<br>
+            <strong>Avaliação:</strong> ${livro.avaliacao ? livro.avaliacao.toFixed(1) : 'Não avaliado'}
+        `;
+        listaLivros.appendChild(divLivro);
+    });
+}
+
+// Inicializa a lista de livros ao carregar a página
+listarLivros();
+
+// Event listener para o formulário de adicionar livro
+document.getElementById('formLivro').addEventListener('submit', adicionarLivro);
+
+
+    </script>
+</body>
+</html>
